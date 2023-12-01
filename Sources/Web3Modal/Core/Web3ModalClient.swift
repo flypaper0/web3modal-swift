@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import UIKit
+import CoinbaseWalletSDK
 
 // Web3 Modal Client
 ///
@@ -140,7 +141,7 @@ public class Web3ModalClient {
     /// For sending JSON-RPC requests to wallet.
     /// - Parameters:
     ///   - params: Parameters defining request and related session
-    public func request(params: Request) async throws {
+    public func request(params: WalletConnectSign.Request) async throws {
         try await signClient.request(params: params)
     }
     
@@ -198,6 +199,16 @@ public class Web3ModalClient {
         
         DispatchQueue.main.async {
             UIApplication.shared.open(url, completionHandler: nil)
+        }
+    }
+    
+    @discardableResult
+    public func handleDeeplink(_ url: URL) -> Bool {
+        do {
+            return try CoinbaseWalletSDK.shared.handleResponse(url)
+        } catch {
+            store.toast = .init(style: .error, message: error.localizedDescription)
+            return false
         }
     }
 }
