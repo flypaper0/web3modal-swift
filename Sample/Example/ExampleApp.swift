@@ -22,15 +22,16 @@ struct ExampleApp: App {
             redirect: .init(native: "w3mdapp://", universal: nil)
         )
         
-        let projectId = Secrets.load().projectID
-        
+        let secrets = Secrets.load()
+
         Networking.configure(
-            projectId: projectId,
+            groupIdentifier: secrets.groupIdentifier, 
+            projectId: secrets.projectID,
             socketFactory: WalletConnectSocketClientFactory()
         )
 
         Web3Modal.configure(
-            projectId: projectId,
+            projectId: secrets.projectID,
             metadata: metadata
         )
     }

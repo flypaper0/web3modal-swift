@@ -2,9 +2,11 @@ import Foundation
 
 struct Secrets: Decodable {
     let projectID: String
-    
+    let groupIdentifier: String
+
     enum CodingKeys: String, CodingKey {
         case projectID = "PROJECT_ID"
+        case groupIdentifier = "GROUP_IDENTIFIER"
     }
 
     static func load() -> Self {
