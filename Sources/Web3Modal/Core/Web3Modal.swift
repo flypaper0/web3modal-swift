@@ -154,17 +154,20 @@ public extension Web3Modal {
             assertionFailure("No controller found for presenting modal")
             return
         }
-        
-        _ = Web3Modal.instance
-        
-        Store.shared.connecting = true
-        
-        Web3Modal.viewModel.router.setRoute(Store.shared.session != nil ? Router.AccountSubpage.profile : Router.ConnectingSubpage.connectWallet)
-        
-        let modal = Web3ModalSheetController(router: Web3Modal.viewModel.router)
-        vc.present(modal, animated: true)
+
+        vc.present(Self.create(), animated: true)
     }
-    
+
+    static func create() -> UIViewController {
+        _ = Web3Modal.instance
+
+        Store.shared.connecting = true
+
+        Web3Modal.viewModel.router.setRoute(Store.shared.session != nil ? Router.AccountSubpage.profile : Router.ConnectingSubpage.connectWallet)
+
+        return Web3ModalSheetController(router: Web3Modal.viewModel.router)
+    }
+
     private static func topViewController(_ base: UIViewController? = nil) -> UIViewController? {
         let base = base ?? UIApplication
             .shared
